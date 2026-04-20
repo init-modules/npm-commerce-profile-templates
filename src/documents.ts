@@ -13,6 +13,7 @@ export type CommerceProfileTemplateSource =
 	| { type: "template"; sourceId?: string };
 
 type CommerceProfileTemplateKind = "retail" | "services" | "hybrid";
+type CommerceCatalogBindingPath = "items" | "products" | "services";
 
 type CommerceProfileTemplateScenario = {
 	id: CommerceProfileTemplateId;
@@ -417,6 +418,9 @@ const resolveScenario = (
 	return scenario ?? scenarios[0];
 };
 
+const resolvePrimaryCatalogHref = (scenario: CommerceProfileTemplateScenario) =>
+	scenario.kind === "services" ? "/services" : "/products";
+
 export const isCommerceProfileTemplateSource = (
 	source: { type: string; sourceId?: string },
 ) =>
@@ -471,7 +475,7 @@ const createHeroBlock = (
 		body: t(locale, scenario.hero.body),
 		primaryLabel: t(locale, scenario.hero.primaryLabel),
 		primaryMetaLabel: locale === "ru" ? "Каталог" : "Catalog",
-		primaryHref: "/catalog",
+		primaryHref: resolvePrimaryCatalogHref(scenario),
 		secondaryLabel: t(locale, scenario.hero.secondaryLabel),
 		secondaryHref: "/account/orders",
 		spotlightLabel: t(locale, scenario.hero.spotlightLabel),
@@ -521,6 +525,7 @@ const createCatalogBlock = (
 	scenario: CommerceProfileTemplateScenario,
 	locale: CommerceProfileTemplateLocale,
 	id = "commerce-product-grid",
+	path?: CommerceCatalogBindingPath,
 ): WebsiteBuilderBlock => ({
 	id,
 	module: "commerce-website-builder",
@@ -532,19 +537,27 @@ const createCatalogBlock = (
 		emptyTitle: t(locale, scenario.catalog.emptyTitle),
 		emptyBody: t(locale, scenario.catalog.emptyBody),
 		cardCtaLabel: t(locale, scenario.catalog.cardCtaLabel),
-		columns: scenario.catalog.columns,
+		addToCartLabel:
+			path === "services" || scenario.kind === "services"
+				? t(locale, { en: "Book", ru: "Записаться" })
+				: t(locale, { en: "Add to cart", ru: "В корзину" }),
+		columns:
+			path === "services" || scenario.kind === "services"
+				? Math.min(scenario.catalog.columns, 3)
+				: Math.max(scenario.catalog.columns, 5),
 		showDescription: true,
 	},
 	bindings: {
 		items: {
 			source: "commerceCatalog",
 			path:
-				scenario.kind === "retail"
+				path ??
+				(scenario.kind === "retail"
 					? "products"
 					: scenario.kind === "services"
 						? "services"
-						: "items",
-			mode: "read",
+						: "items"),
+			mode: "write",
 		},
 	},
 });
@@ -562,7 +575,7 @@ const createCtaBlock = (
 		title: t(locale, scenario.cta.title),
 		body: t(locale, scenario.cta.body),
 		primaryLabel: t(locale, scenario.cta.primaryLabel),
-		primaryHref: "/catalog",
+		primaryHref: resolvePrimaryCatalogHref(scenario),
 		secondaryLabel: t(locale, scenario.cta.secondaryLabel),
 		secondaryHref: "/cart",
 		panelEyebrow: t(locale, scenario.cta.panelEyebrow),
@@ -620,6 +633,27 @@ const createCatalogDocument = (
 		[createCatalogBlock(scenario, locale)],
 	);
 
+const createTypedCatalogDocument = (
+	scenario: CommerceProfileTemplateScenario,
+	locale: CommerceProfileTemplateLocale,
+	path: Extract<CommerceCatalogBindingPath, "products" | "services">,
+) =>
+	createDocument(
+		`${scenario.id}-${path}`,
+		path === "services"
+			? t(locale, { en: "Services", ru: "Услуги" })
+			: t(locale, { en: "Products", ru: "Товары" }),
+		path === "services" ? "/services" : "/products",
+		[
+			createCatalogBlock(
+				scenario,
+				locale,
+				`commerce-${path}-grid`,
+				path,
+			),
+		],
+	);
+
 const createDetailDocument = (
 	scenario: CommerceProfileTemplateScenario,
 	locale: CommerceProfileTemplateLocale,
@@ -662,7 +696,7 @@ const createDetailDocument = (
 					product: {
 						source: "commerceProduct",
 						path: "product",
-						mode: "read",
+						mode: "write",
 					},
 				},
 			},
@@ -735,7 +769,7 @@ const createCartDocument = (
 							? t(locale, { en: "Request booking", ru: "Оставить заявку" })
 							: t(locale, { en: "Checkout", ru: "Оформить заказ" }),
 					catalogLabel: t(locale, { en: "Back to catalog", ru: "Назад в каталог" }),
-					catalogHref: "/catalog",
+					catalogHref: resolvePrimaryCatalogHref(scenario),
 					checkoutHref: "/checkout",
 				},
 			},
@@ -828,7 +862,7 @@ const createOrdersDocument = (
 					totalLabel: t(locale, { en: "Total", ru: "Итого" }),
 					itemCountLabel: t(locale, { en: "items", ru: "позиций" }),
 					catalogLabel: t(locale, { en: "Open catalog", ru: "Открыть каталог" }),
-					catalogHref: "/catalog",
+					catalogHref: resolvePrimaryCatalogHref(scenario),
 					limit: 20,
 				},
 			},
@@ -856,15 +890,8 @@ const createSiteRegionDocument = (
 							brandHref: "/",
 							logoImage: null,
 							utilityLinks: [
-								{
-									label:
-										scenario.kind === "services"
-											? t(locale, { en: "Services", ru: "Услуги" })
-											: scenario.kind === "hybrid"
-												? t(locale, { en: "Offers", ru: "Предложения" })
-												: t(locale, { en: "Catalog", ru: "Каталог" }),
-									href: "/catalog",
-								},
+								{ label: t(locale, { en: "Products", ru: "Товары" }), href: "/products" },
+								{ label: t(locale, { en: "Services", ru: "Услуги" }), href: "/services" },
 								{ label: t(locale, { en: "Orders", ru: "Заказы" }), href: "/account/orders" },
 								{ label: t(locale, { en: "Cart", ru: "Корзина" }), href: "/cart" },
 							],
@@ -887,7 +914,7 @@ const createSiteRegionDocument = (
 								scenario.kind === "services"
 									? t(locale, { en: "Book now", ru: "Записаться" })
 									: t(locale, { en: "Shop now", ru: "Купить" }),
-							primaryCtaHref: "/catalog",
+							primaryCtaHref: resolvePrimaryCatalogHref(scenario),
 							secondaryCtaLabel: t(locale, { en: "Orders", ru: "Заказы" }),
 							secondaryCtaHref: "/account/orders",
 							showLoginAction: true,
@@ -895,7 +922,8 @@ const createSiteRegionDocument = (
 							sticky: true,
 							compactOnScroll: true,
 							categoryLinks: [
-								{ label: t(locale, scenario.catalog.eyebrow), href: "/catalog" },
+								{ label: t(locale, { en: "Products", ru: "Товары" }), href: "/products" },
+								{ label: t(locale, { en: "Services", ru: "Услуги" }), href: "/services" },
 								{ label: t(locale, { en: "Cart", ru: "Корзина" }), href: "/cart" },
 								{ label: t(locale, { en: "Checkout", ru: "Оформление" }), href: "/checkout" },
 							],
@@ -942,7 +970,8 @@ const createSiteRegionDocument = (
 									title: t(locale, { en: "Storefront", ru: "Витрина" }),
 									links: [
 										{ label: t(locale, { en: "Home", ru: "Главная" }), href: "/" },
-										{ label: t(locale, { en: "Catalog", ru: "Каталог" }), href: "/catalog" },
+										{ label: t(locale, { en: "Products", ru: "Товары" }), href: "/products" },
+										{ label: t(locale, { en: "Services", ru: "Услуги" }), href: "/services" },
 										{ label: t(locale, { en: "Cart", ru: "Корзина" }), href: "/cart" },
 									],
 								},
@@ -988,6 +1017,8 @@ export const createCommerceProfileTemplateTree = (
 	const scenario = resolveScenario(source);
 	const home = createHomeDocument(scenario, locale);
 	const catalog = createCatalogDocument(scenario, locale);
+	const products = createTypedCatalogDocument(scenario, locale, "products");
+	const services = createTypedCatalogDocument(scenario, locale, "services");
 	const detail = createDetailDocument(scenario, locale);
 	const cart = createCartDocument(scenario, locale);
 	const checkout = createCheckoutDocument(scenario, locale);
@@ -997,6 +1028,8 @@ export const createCommerceProfileTemplateTree = (
 		pages: {
 			home: createPageEntry(home),
 			catalog: createPageEntry(catalog),
+			products: createPageEntry(products),
+			services: createPageEntry(services),
 			product: createPageEntry(detail),
 			cart: createPageEntry(cart),
 			checkout: createPageEntry(checkout),
