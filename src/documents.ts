@@ -114,7 +114,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			primaryLabel: { en: "Shop the catalog", ru: "Открыть каталог" },
 			secondaryLabel: { en: "Track orders", ru: "Мои заказы" },
 			spotlightLabel: { en: "Launch focus", ru: "Фокус запуска" },
-			spotlightValue: { en: "120 SKU launch catalog", ru: "120 SKU в стартовом каталоге" },
+			spotlightValue: {
+				en: "120 SKU launch catalog",
+				ru: "120 SKU в стартовом каталоге",
+			},
 			imageUrl:
 				"https://images.unsplash.com/photo-1513161455079-7dc1de15ef3e?auto=format&fit=crop&w=1400&q=80",
 			imageAlt: {
@@ -124,12 +127,18 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 		},
 		catalog: {
 			eyebrow: { en: "Live catalog", ru: "Живой каталог" },
-			title: { en: "Best sellers ready to ship", ru: "Хиты продаж готовы к доставке" },
+			title: {
+				en: "Best sellers ready to ship",
+				ru: "Хиты продаж готовы к доставке",
+			},
 			body: {
 				en: "Show current product cards from the commerce catalog: price, stock-aware item pages and a direct route into cart and checkout.",
 				ru: "Показывайте актуальные карточки из commerce catalog: цены, страницы товара с остатками и прямой путь в корзину и оформление.",
 			},
-			emptyTitle: { en: "No active products yet", ru: "Активных товаров пока нет" },
+			emptyTitle: {
+				en: "No active products yet",
+				ru: "Активных товаров пока нет",
+			},
 			emptyBody: {
 				en: "Add active catalog products to turn this section into the storefront grid.",
 				ru: "Добавьте активные товары каталога, чтобы эта секция стала витриной.",
@@ -137,37 +146,76 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			cardCtaLabel: { en: "View item", ru: "Открыть товар" },
 			columns: 3,
 		},
-		proofTitle: { en: "Retail profile coverage", ru: "Что покрывает retail-профиль" },
+		proofTitle: {
+			en: "Retail profile coverage",
+			ru: "Что покрывает retail-профиль",
+		},
 		proofItems: [
-			{ value: "24h", label: { en: "city delivery promise", ru: "обещание доставки по городу" } },
-			{ value: "4 pages", label: { en: "catalog, item, cart and checkout", ru: "каталог, товар, корзина и оформление" } },
-			{ value: "B2C", label: { en: "copy tuned for product sales", ru: "тексты под розничные продажи" } },
-			{ value: "KZT", label: { en: "ready for local pricing", ru: "готово для локальных цен" } },
+			{
+				value: "24h",
+				label: {
+					en: "city delivery promise",
+					ru: "обещание доставки по городу",
+				},
+			},
+			{
+				value: "4 pages",
+				label: {
+					en: "catalog, item, cart and checkout",
+					ru: "каталог, товар, корзина и оформление",
+				},
+			},
+			{
+				value: "B2C",
+				label: {
+					en: "copy tuned for product sales",
+					ru: "тексты под розничные продажи",
+				},
+			},
+			{
+				value: "KZT",
+				label: {
+					en: "ready for local pricing",
+					ru: "готово для локальных цен",
+				},
+			},
 		],
 		features: {
 			eyebrow: { en: "Store operations", ru: "Операции магазина" },
-			title: { en: "A storefront profile with practical merchandising sections", ru: "Профиль витрины с практичным мерчандайзингом" },
+			title: {
+				en: "A storefront profile with practical merchandising sections",
+				ru: "Профиль витрины с практичным мерчандайзингом",
+			},
 			body: {
 				en: "The template keeps the first screen editorial, then quickly moves visitors into live product cards and a measurable checkout path.",
 				ru: "Шаблон оставляет первый экран редакционным, затем быстро ведет посетителей к живым карточкам и понятному пути оформления.",
 			},
 			items: [
 				{
-					title: { en: "Product-first navigation", ru: "Навигация вокруг товаров" },
+					title: {
+						en: "Product-first navigation",
+						ru: "Навигация вокруг товаров",
+					},
 					body: {
 						en: "Header, footer and CTAs point to catalog, cart and order history without extra marketing detours.",
 						ru: "Хедер, футер и CTA ведут в каталог, корзину и историю заказов без лишних маркетинговых обходов.",
 					},
 				},
 				{
-					title: { en: "Readable empty states", ru: "Понятные пустые состояния" },
+					title: {
+						en: "Readable empty states",
+						ru: "Понятные пустые состояния",
+					},
 					body: {
 						en: "When the catalog is not populated yet, customers see useful operational copy instead of broken grids.",
 						ru: "Пока каталог не заполнен, покупатели видят рабочие тексты вместо сломанной сетки.",
 					},
 				},
 				{
-					title: { en: "Checkout-ready pages", ru: "Страницы готовы к checkout" },
+					title: {
+						en: "Checkout-ready pages",
+						ru: "Страницы готовы к checkout",
+					},
 					body: {
 						en: "Cart, checkout and order history pages are included so teams can test the full commerce loop immediately.",
 						ru: "Корзина, оформление и история заказов включены, чтобы команда сразу проверяла полный commerce loop.",
@@ -177,7 +225,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 		},
 		cta: {
 			badge: { en: "Retail launch kit", ru: "Retail launch kit" },
-			title: { en: "Publish a product store without rebuilding the commerce flow", ru: "Запустите магазин товаров без пересборки commerce flow" },
+			title: {
+				en: "Publish a product store without rebuilding the commerce flow",
+				ru: "Запустите магазин товаров без пересборки commerce flow",
+			},
 			body: {
 				en: "Use the profile as a production-ready starter: replace catalog items, refine copy and keep the operational pages intact.",
 				ru: "Используйте профиль как production-ready starter: замените товары, уточните тексты и оставьте операционные страницы на месте.",
@@ -185,11 +236,23 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			primaryLabel: { en: "Start shopping", ru: "Перейти к покупкам" },
 			secondaryLabel: { en: "Review cart", ru: "Проверить корзину" },
 			panelEyebrow: { en: "Included", ru: "Включено" },
-			panelLabel: { en: "Retail storefront workflow", ru: "Retail storefront workflow" },
+			panelLabel: {
+				en: "Retail storefront workflow",
+				ru: "Retail storefront workflow",
+			},
 			panelItems: [
-				{ en: "Home merchandising page", ru: "Главная страница мерчандайзинга" },
-				{ en: "Catalog and product detail templates", ru: "Каталог и шаблон страницы товара" },
-				{ en: "Cart, checkout and account orders", ru: "Корзина, checkout и заказы аккаунта" },
+				{
+					en: "Home merchandising page",
+					ru: "Главная страница мерчандайзинга",
+				},
+				{
+					en: "Catalog and product detail templates",
+					ru: "Каталог и шаблон страницы товара",
+				},
+				{
+					en: "Cart, checkout and account orders",
+					ru: "Корзина, checkout и заказы аккаунта",
+				},
 			],
 		},
 	},
@@ -208,7 +271,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 		contact: "+7 (707) 311-90-44",
 		email: "hello@northstar.example",
 		hero: {
-			eyebrow: { en: "Service booking storefront", ru: "Витрина записи на услуги" },
+			eyebrow: {
+				en: "Service booking storefront",
+				ru: "Витрина записи на услуги",
+			},
 			title: {
 				en: "A trusted service studio for consultations, diagnostics and ongoing care plans",
 				ru: "Сервисная студия для консультаций, диагностики и долгосрочных программ сопровождения",
@@ -230,12 +296,18 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 		},
 		catalog: {
 			eyebrow: { en: "Service catalog", ru: "Каталог услуг" },
-			title: { en: "Book a focused service package", ru: "Запишитесь на понятный пакет услуг" },
+			title: {
+				en: "Book a focused service package",
+				ru: "Запишитесь на понятный пакет услуг",
+			},
 			body: {
 				en: "Use live catalog items as bookable service packages with descriptions, price anchors and a checkout request flow.",
 				ru: "Используйте позиции каталога как пакеты услуг с описаниями, ценами и flow заявки через checkout.",
 			},
-			emptyTitle: { en: "No active services yet", ru: "Активных услуг пока нет" },
+			emptyTitle: {
+				en: "No active services yet",
+				ru: "Активных услуг пока нет",
+			},
 			emptyBody: {
 				en: "Add active service catalog items to publish the booking storefront.",
 				ru: "Добавьте активные услуги в каталог, чтобы опубликовать витрину записи.",
@@ -243,16 +315,43 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			cardCtaLabel: { en: "View service", ru: "Открыть услугу" },
 			columns: 2,
 		},
-		proofTitle: { en: "Built for service teams", ru: "Собрано для сервисных команд" },
+		proofTitle: {
+			en: "Built for service teams",
+			ru: "Собрано для сервисных команд",
+		},
 		proofItems: [
-			{ value: "30 min", label: { en: "starter consultation unit", ru: "базовый слот консультации" } },
-			{ value: "2-step", label: { en: "service selection to request", ru: "выбор услуги и заявка" } },
-			{ value: "CRM", label: { en: "clean order snapshots", ru: "чистые снимки заказов" } },
-			{ value: "B2B", label: { en: "copy for trust-led selling", ru: "тексты для продаж через доверие" } },
+			{
+				value: "30 min",
+				label: {
+					en: "starter consultation unit",
+					ru: "базовый слот консультации",
+				},
+			},
+			{
+				value: "2-step",
+				label: {
+					en: "service selection to request",
+					ru: "выбор услуги и заявка",
+				},
+			},
+			{
+				value: "CRM",
+				label: { en: "clean order snapshots", ru: "чистые снимки заказов" },
+			},
+			{
+				value: "B2B",
+				label: {
+					en: "copy for trust-led selling",
+					ru: "тексты для продаж через доверие",
+				},
+			},
 		],
 		features: {
 			eyebrow: { en: "Booking operations", ru: "Операции записи" },
-			title: { en: "Everything a service provider needs before a scheduler exists", ru: "Все, что нужно провайдеру услуг до полноценного scheduler" },
+			title: {
+				en: "Everything a service provider needs before a scheduler exists",
+				ru: "Все, что нужно провайдеру услуг до полноценного scheduler",
+			},
 			body: {
 				en: "The commerce primitives handle service cards, booking-cart intent and checkout contact capture while the team keeps service operations lightweight.",
 				ru: "Commerce-примитивы закрывают карточки услуг, намерение записи через корзину и сбор контактов в checkout, пока команда держит операции легкими.",
@@ -273,7 +372,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 					},
 				},
 				{
-					title: { en: "Order history as requests", ru: "История заказов как заявки" },
+					title: {
+						en: "Order history as requests",
+						ru: "История заказов как заявки",
+					},
 					body: {
 						en: "Account orders become a simple request history for repeat clients and service managers.",
 						ru: "Заказы аккаунта становятся простой историей заявок для постоянных клиентов и менеджеров услуг.",
@@ -283,7 +385,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 		},
 		cta: {
 			badge: { en: "Service launch kit", ru: "Service launch kit" },
-			title: { en: "Turn expertise into a bookable service catalog", ru: "Превратите экспертизу в каталог услуг с записью" },
+			title: {
+				en: "Turn expertise into a bookable service catalog",
+				ru: "Превратите экспертизу в каталог услуг с записью",
+			},
 			body: {
 				en: "The profile gives service teams a real storefront now and leaves room for a deeper scheduling integration later.",
 				ru: "Профиль дает сервисным командам настоящую витрину сейчас и оставляет место для глубокой scheduling-интеграции позже.",
@@ -291,11 +396,23 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			primaryLabel: { en: "Choose a service", ru: "Выбрать услугу" },
 			secondaryLabel: { en: "See requests", ru: "Посмотреть заявки" },
 			panelEyebrow: { en: "Workflow", ru: "Workflow" },
-			panelLabel: { en: "Service request funnel", ru: "Service request funnel" },
+			panelLabel: {
+				en: "Service request funnel",
+				ru: "Service request funnel",
+			},
 			panelItems: [
-				{ en: "Service catalog and service detail", ru: "Каталог услуг и страница услуги" },
-				{ en: "Booking-cart style add action", ru: "Добавление в стиле booking cart" },
-				{ en: "Checkout form for contact confirmation", ru: "Checkout-форма для подтверждения контактов" },
+				{
+					en: "Service catalog and service detail",
+					ru: "Каталог услуг и страница услуги",
+				},
+				{
+					en: "Booking-cart style add action",
+					ru: "Добавление в стиле booking cart",
+				},
+				{
+					en: "Checkout form for contact confirmation",
+					ru: "Checkout-форма для подтверждения контактов",
+				},
 			],
 		},
 	},
@@ -326,7 +443,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			primaryLabel: { en: "Browse all offers", ru: "Смотреть предложения" },
 			secondaryLabel: { en: "Order history", ru: "История заказов" },
 			spotlightLabel: { en: "Hybrid offer", ru: "Гибридное предложение" },
-			spotlightValue: { en: "Kit + setup + care", ru: "Набор + настройка + уход" },
+			spotlightValue: {
+				en: "Kit + setup + care",
+				ru: "Набор + настройка + уход",
+			},
 			imageUrl:
 				"https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1400&q=80",
 			imageAlt: {
@@ -336,12 +456,18 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 		},
 		catalog: {
 			eyebrow: { en: "Unified catalog", ru: "Единый каталог" },
-			title: { en: "Products and service packages in one cart", ru: "Товары и пакеты услуг в одной корзине" },
+			title: {
+				en: "Products and service packages in one cart",
+				ru: "Товары и пакеты услуг в одной корзине",
+			},
 			body: {
 				en: "Mix physical items, subscriptions and service appointments while keeping one cart, one checkout and one account order history.",
 				ru: "Смешивайте физические товары, подписки и сервисные записи, сохраняя одну корзину, один checkout и одну историю заказов.",
 			},
-			emptyTitle: { en: "No active offers yet", ru: "Активных предложений пока нет" },
+			emptyTitle: {
+				en: "No active offers yet",
+				ru: "Активных предложений пока нет",
+			},
 			emptyBody: {
 				en: "Add product and service catalog items to show the full hybrid offer.",
 				ru: "Добавьте товары и услуги в каталог, чтобы показать полное гибридное предложение.",
@@ -349,23 +475,53 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			cardCtaLabel: { en: "Open offer", ru: "Открыть предложение" },
 			columns: 3,
 		},
-		proofTitle: { en: "Hybrid commerce profile", ru: "Гибридный commerce-профиль" },
+		proofTitle: {
+			en: "Hybrid commerce profile",
+			ru: "Гибридный commerce-профиль",
+		},
 		proofItems: [
-			{ value: "1 cart", label: { en: "for products and services", ru: "для товаров и услуг" } },
-			{ value: "3 flows", label: { en: "buy, book and reorder", ru: "покупка, запись и повтор" } },
-			{ value: "Ops", label: { en: "clear fulfillment copy", ru: "понятные операционные тексты" } },
-			{ value: "Scale", label: { en: "ready for mixed catalogs", ru: "готово для смешанных каталогов" } },
+			{
+				value: "1 cart",
+				label: { en: "for products and services", ru: "для товаров и услуг" },
+			},
+			{
+				value: "3 flows",
+				label: { en: "buy, book and reorder", ru: "покупка, запись и повтор" },
+			},
+			{
+				value: "Ops",
+				label: {
+					en: "clear fulfillment copy",
+					ru: "понятные операционные тексты",
+				},
+			},
+			{
+				value: "Scale",
+				label: {
+					en: "ready for mixed catalogs",
+					ru: "готово для смешанных каталогов",
+				},
+			},
 		],
 		features: {
-			eyebrow: { en: "Mixed catalog strategy", ru: "Стратегия смешанного каталога" },
-			title: { en: "A profile for teams that sell the thing and the outcome", ru: "Профиль для команд, которые продают и вещь, и результат" },
+			eyebrow: {
+				en: "Mixed catalog strategy",
+				ru: "Стратегия смешанного каталога",
+			},
+			title: {
+				en: "A profile for teams that sell the thing and the outcome",
+				ru: "Профиль для команд, которые продают и вещь, и результат",
+			},
 			body: {
 				en: "The first screen explains the combined offer, the catalog shows everything together and the operational pages keep checkout consistent.",
 				ru: "Первый экран объясняет комбинированное предложение, каталог показывает все вместе, а операционные страницы держат checkout единым.",
 			},
 			items: [
 				{
-					title: { en: "Unified offer architecture", ru: "Единая архитектура оффера" },
+					title: {
+						en: "Unified offer architecture",
+						ru: "Единая архитектура оффера",
+					},
 					body: {
 						en: "Physical products, service packages and support subscriptions can share one storefront language.",
 						ru: "Физические товары, сервисные пакеты и подписки поддержки говорят на одном языке витрины.",
@@ -379,7 +535,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 					},
 				},
 				{
-					title: { en: "Reusable commerce pages", ru: "Переиспользуемые commerce-страницы" },
+					title: {
+						en: "Reusable commerce pages",
+						ru: "Переиспользуемые commerce-страницы",
+					},
 					body: {
 						en: "The same catalog, detail, cart, checkout and orders pages work for both sides of the business.",
 						ru: "Одинаковые страницы каталога, детали, корзины, checkout и заказов работают для обеих сторон бизнеса.",
@@ -389,7 +548,10 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 		},
 		cta: {
 			badge: { en: "Hybrid launch kit", ru: "Hybrid launch kit" },
-			title: { en: "Launch the mixed catalog before the business outgrows one checkout", ru: "Запустите смешанный каталог до того, как бизнес перерастет один checkout" },
+			title: {
+				en: "Launch the mixed catalog before the business outgrows one checkout",
+				ru: "Запустите смешанный каталог до того, как бизнес перерастет один checkout",
+			},
 			body: {
 				en: "Keep products and services together until operations prove which parts need deeper domain-specific automation.",
 				ru: "Держите товары и услуги вместе, пока операции не покажут, каким частям нужна более глубокая доменная автоматизация.",
@@ -399,15 +561,26 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 			panelEyebrow: { en: "Included", ru: "Включено" },
 			panelLabel: { en: "Hybrid commerce loop", ru: "Hybrid commerce loop" },
 			panelItems: [
-				{ en: "Combined positioning and catalog copy", ru: "Комбинированное позиционирование и тексты каталога" },
-				{ en: "Offer detail template for any item type", ru: "Шаблон страницы предложения для любого типа позиции" },
-				{ en: "Single cart, checkout and order history", ru: "Единая корзина, checkout и история заказов" },
+				{
+					en: "Combined positioning and catalog copy",
+					ru: "Комбинированное позиционирование и тексты каталога",
+				},
+				{
+					en: "Offer detail template for any item type",
+					ru: "Шаблон страницы предложения для любого типа позиции",
+				},
+				{
+					en: "Single cart, checkout and order history",
+					ru: "Единая корзина, checkout и история заказов",
+				},
 			],
 		},
 	},
 ];
 
-const scenarioById = new Map(scenarios.map((scenario) => [scenario.id, scenario]));
+const scenarioById = new Map(
+	scenarios.map((scenario) => [scenario.id, scenario]),
+);
 
 const resolveScenario = (
 	source: CommerceProfileTemplateSource,
@@ -418,12 +591,14 @@ const resolveScenario = (
 	return scenario ?? scenarios[0];
 };
 
-const resolvePrimaryCatalogHref = (scenario: CommerceProfileTemplateScenario) =>
-	scenario.kind === "services" ? "/services" : "/products";
+const resolvePrimaryCatalogHref = (
+	scenario: CommerceProfileTemplateScenario,
+) => (scenario.kind === "services" ? "/services" : "/products");
 
-export const isCommerceProfileTemplateSource = (
-	source: { type: string; sourceId?: string },
-) =>
+export const isCommerceProfileTemplateSource = (source: {
+	type: string;
+	sourceId?: string;
+}) =>
 	(source.type === "preset" || source.type === "template") &&
 	typeof source.sourceId === "string" &&
 	scenarioById.has(source.sourceId as CommerceProfileTemplateId);
@@ -644,14 +819,7 @@ const createTypedCatalogDocument = (
 			? t(locale, { en: "Services", ru: "Услуги" })
 			: t(locale, { en: "Products", ru: "Товары" }),
 		path === "services" ? "/services" : "/products",
-		[
-			createCatalogBlock(
-				scenario,
-				locale,
-				`commerce-${path}-grid`,
-				path,
-			),
-		],
+		[createCatalogBlock(scenario, locale, `commerce-${path}-grid`, path)],
 	);
 
 const createDetailDocument = (
@@ -687,7 +855,10 @@ const createDetailDocument = (
 							: scenario.kind === "hybrid"
 								? t(locale, { en: "Offer", ru: "Предложение" })
 								: t(locale, { en: "Product", ru: "Товар" }),
-					backLabel: t(locale, { en: "Back to catalog", ru: "Назад в каталог" }),
+					backLabel: t(locale, {
+						en: "Back to catalog",
+						ru: "Назад в каталог",
+					}),
 					showSku: scenario.kind !== "services",
 					showDescription: true,
 					showImage: true,
@@ -751,9 +922,15 @@ const createCartDocument = (
 						scenario.kind === "services"
 							? t(locale, { en: "Selected services", ru: "Выбранные услуги" })
 							: scenario.kind === "hybrid"
-								? t(locale, { en: "Selected offers", ru: "Выбранные предложения" })
+								? t(locale, {
+										en: "Selected offers",
+										ru: "Выбранные предложения",
+									})
 								: t(locale, { en: "Your cart", ru: "Ваша корзина" }),
-					emptyTitle: t(locale, { en: "Your cart is empty", ru: "Корзина пуста" }),
+					emptyTitle: t(locale, {
+						en: "Your cart is empty",
+						ru: "Корзина пуста",
+					}),
 					emptyBody:
 						scenario.kind === "services"
 							? t(locale, {
@@ -768,7 +945,10 @@ const createCartDocument = (
 						scenario.kind === "services"
 							? t(locale, { en: "Request booking", ru: "Оставить заявку" })
 							: t(locale, { en: "Checkout", ru: "Оформить заказ" }),
-					catalogLabel: t(locale, { en: "Back to catalog", ru: "Назад в каталог" }),
+					catalogLabel: t(locale, {
+						en: "Back to catalog",
+						ru: "Назад в каталог",
+					}),
 					catalogHref: resolvePrimaryCatalogHref(scenario),
 					checkoutHref: "/checkout",
 				},
@@ -793,7 +973,10 @@ const createCheckoutDocument = (
 					eyebrow: t(locale, { en: "Checkout", ru: "Оформление" }),
 					title:
 						scenario.kind === "services"
-							? t(locale, { en: "Confirm your service request", ru: "Подтвердите заявку на услугу" })
+							? t(locale, {
+									en: "Confirm your service request",
+									ru: "Подтвердите заявку на услугу",
+								})
 							: t(locale, { en: "Place your order", ru: "Оформить заказ" }),
 					body:
 						scenario.kind === "services"
@@ -839,7 +1022,10 @@ const createOrdersDocument = (
 					eyebrow: t(locale, { en: "Account", ru: "Личный кабинет" }),
 					title:
 						scenario.kind === "services"
-							? t(locale, { en: "Your service requests", ru: "Ваши заявки на услуги" })
+							? t(locale, {
+									en: "Your service requests",
+									ru: "Ваши заявки на услуги",
+								})
 							: t(locale, { en: "Your orders", ru: "Ваши заказы" }),
 					emptyTitle:
 						scenario.kind === "services"
@@ -861,7 +1047,10 @@ const createOrdersDocument = (
 							: t(locale, { en: "Order", ru: "Заказ" }),
 					totalLabel: t(locale, { en: "Total", ru: "Итого" }),
 					itemCountLabel: t(locale, { en: "items", ru: "позиций" }),
-					catalogLabel: t(locale, { en: "Open catalog", ru: "Открыть каталог" }),
+					catalogLabel: t(locale, {
+						en: "Open catalog",
+						ru: "Открыть каталог",
+					}),
 					catalogHref: resolvePrimaryCatalogHref(scenario),
 					limit: 20,
 				},
@@ -890,10 +1079,22 @@ const createSiteRegionDocument = (
 							brandHref: "/",
 							logoImage: null,
 							utilityLinks: [
-								{ label: t(locale, { en: "Products", ru: "Товары" }), href: "/products" },
-								{ label: t(locale, { en: "Services", ru: "Услуги" }), href: "/services" },
-								{ label: t(locale, { en: "Orders", ru: "Заказы" }), href: "/account/orders" },
-								{ label: t(locale, { en: "Cart", ru: "Корзина" }), href: "/cart" },
+								{
+									label: t(locale, { en: "Products", ru: "Товары" }),
+									href: "/products",
+								},
+								{
+									label: t(locale, { en: "Services", ru: "Услуги" }),
+									href: "/services",
+								},
+								{
+									label: t(locale, { en: "Orders", ru: "Заказы" }),
+									href: "/account/orders",
+								},
+								{
+									label: t(locale, { en: "Cart", ru: "Корзина" }),
+									href: "/cart",
+								},
 							],
 							catalogLabel:
 								scenario.kind === "services"
@@ -903,13 +1104,19 @@ const createSiteRegionDocument = (
 								scenario.kind === "services"
 									? t(locale, { en: "Search services", ru: "Поиск услуг" })
 									: scenario.kind === "hybrid"
-										? t(locale, { en: "Search offers", ru: "Поиск предложений" })
+										? t(locale, {
+												en: "Search offers",
+												ru: "Поиск предложений",
+											})
 										: t(locale, { en: "Search products", ru: "Поиск товаров" }),
 							contactValue: scenario.contact,
 							contactCaption:
 								scenario.kind === "services"
 									? t(locale, { en: "Booking support", ru: "Поддержка записи" })
-									: t(locale, { en: "Daily support", ru: "Поддержка каждый день" }),
+									: t(locale, {
+											en: "Daily support",
+											ru: "Поддержка каждый день",
+										}),
 							primaryCtaLabel:
 								scenario.kind === "services"
 									? t(locale, { en: "Book now", ru: "Записаться" })
@@ -922,10 +1129,22 @@ const createSiteRegionDocument = (
 							sticky: true,
 							compactOnScroll: true,
 							categoryLinks: [
-								{ label: t(locale, { en: "Products", ru: "Товары" }), href: "/products" },
-								{ label: t(locale, { en: "Services", ru: "Услуги" }), href: "/services" },
-								{ label: t(locale, { en: "Cart", ru: "Корзина" }), href: "/cart" },
-								{ label: t(locale, { en: "Checkout", ru: "Оформление" }), href: "/checkout" },
+								{
+									label: t(locale, { en: "Products", ru: "Товары" }),
+									href: "/products",
+								},
+								{
+									label: t(locale, { en: "Services", ru: "Услуги" }),
+									href: "/services",
+								},
+								{
+									label: t(locale, { en: "Cart", ru: "Корзина" }),
+									href: "/cart",
+								},
+								{
+									label: t(locale, { en: "Checkout", ru: "Оформление" }),
+									href: "/checkout",
+								},
 							],
 						},
 					},
@@ -958,28 +1177,52 @@ const createSiteRegionDocument = (
 											: "Каталог товаров, корзина, checkout и история заказов для аккуратного интернет-магазина.",
 							}),
 							logoImage: null,
-							subscriptionTitle: t(locale, { en: "Get updates", ru: "Получать обновления" }),
+							subscriptionTitle: t(locale, {
+								en: "Get updates",
+								ru: "Получать обновления",
+							}),
 							subscriptionBody: t(locale, {
 								en: "New arrivals, seasonal service slots and operational updates.",
 								ru: "Новинки, сезонные сервисные слоты и операционные обновления.",
 							}),
 							subscriptionPlaceholder: "Email",
-							subscriptionButtonLabel: t(locale, { en: "Subscribe", ru: "Подписаться" }),
+							subscriptionButtonLabel: t(locale, {
+								en: "Subscribe",
+								ru: "Подписаться",
+							}),
 							navigationColumns: [
 								{
 									title: t(locale, { en: "Storefront", ru: "Витрина" }),
 									links: [
-										{ label: t(locale, { en: "Home", ru: "Главная" }), href: "/" },
-										{ label: t(locale, { en: "Products", ru: "Товары" }), href: "/products" },
-										{ label: t(locale, { en: "Services", ru: "Услуги" }), href: "/services" },
-										{ label: t(locale, { en: "Cart", ru: "Корзина" }), href: "/cart" },
+										{
+											label: t(locale, { en: "Home", ru: "Главная" }),
+											href: "/",
+										},
+										{
+											label: t(locale, { en: "Products", ru: "Товары" }),
+											href: "/products",
+										},
+										{
+											label: t(locale, { en: "Services", ru: "Услуги" }),
+											href: "/services",
+										},
+										{
+											label: t(locale, { en: "Cart", ru: "Корзина" }),
+											href: "/cart",
+										},
 									],
 								},
 								{
 									title: t(locale, { en: "Account", ru: "Аккаунт" }),
 									links: [
-										{ label: t(locale, { en: "Orders", ru: "Заказы" }), href: "/account/orders" },
-										{ label: t(locale, { en: "Checkout", ru: "Оформление" }), href: "/checkout" },
+										{
+											label: t(locale, { en: "Orders", ru: "Заказы" }),
+											href: "/account/orders",
+										},
+										{
+											label: t(locale, { en: "Checkout", ru: "Оформление" }),
+											href: "/checkout",
+										},
 									],
 								},
 							],
@@ -988,10 +1231,16 @@ const createSiteRegionDocument = (
 								scenario.email,
 								locale === "ru" ? "Алматы, Казахстан" : "Almaty, Kazakhstan",
 							],
-							legalLabel: t(locale, { en: "Privacy policy", ru: "Политика конфиденциальности" }),
+							legalLabel: t(locale, {
+								en: "Privacy policy",
+								ru: "Политика конфиденциальности",
+							}),
 							legalHref: "/privacy",
 							copyrightLabel: `${t(locale, scenario.brand)} 2026`,
-							developerLabel: t(locale, { en: "Built by init", ru: "Сделано init" }),
+							developerLabel: t(locale, {
+								en: "Built by init",
+								ru: "Сделано init",
+							}),
 							developerHref: "https://init.kz",
 						},
 					},
