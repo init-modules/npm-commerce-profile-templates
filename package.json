@@ -1,7 +1,7 @@
 {
-	"name": "@init-modules/commerce-profile-templates",
+	"name": "@init/commerce-profile-templates",
 	"version": "0.1.0",
-	"description": "Ready-to-use commerce profile templates for the package-first website builder.",
+	"description": "Ready-to-use commerce profile templates for the package-first photon.",
 	"type": "module",
 	"main": "./src/index.ts",
 	"module": "./src/index.ts",
@@ -11,14 +11,17 @@
 		"./documents": "./src/documents.ts"
 	},
 	"peerDependencies": {
-		"@init-modules/commerce-website-builder": "^0.1.0",
-		"@init-modules/website-builder": "^0.1.0",
-		"@init-modules/website-builder-base-kit": "^0.1.0"
+		"@init/commerce-photon": "^0.1.0",
+		"@init/photon": "^0.1.0",
+		"@init/photon-base-kit": "^0.1.0"
 	},
 	"devDependencies": {
-		"@init-modules/commerce-website-builder": "file:../commerce-website-builder",
-		"@init-modules/website-builder": "file:../../website-builder-foundation/website-builder",
-		"@init-modules/website-builder-base-kit": "file:../../website-builder-foundation/website-builder-base-kit",
+		"@init/commerce": "file:../commerce",
+		"@init/commerce-photon": "file:../commerce-photon",
+		"@init/next-data-flow": "file:../../next-data-flow",
+		"@init/photon": "file:../../photon-foundation/photon",
+		"@init/photon-base-kit": "file:../../photon-foundation/photon-base-kit",
+		"@init/ui": "file:../../ui-foundation/ui",
 		"typescript": "^5.9.3"
 	}
 }

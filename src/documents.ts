@@ -1,7 +1,7 @@
 import type {
-	WebsiteBuilderBlock,
-	WebsiteBuilderDocument,
-} from "@init-modules/website-builder";
+	PhotonBlock,
+	PhotonDocument,
+} from "@init/photon";
 
 export type CommerceProfileTemplateLocale = "en" | "ru";
 export type CommerceProfileTemplateId =
@@ -607,8 +607,8 @@ const createDocument = (
 	id: string,
 	name: string,
 	route: string,
-	blocks: WebsiteBuilderDocument["blocks"],
-): WebsiteBuilderDocument => ({
+	blocks: PhotonDocument["blocks"],
+): PhotonDocument => ({
 	id,
 	name,
 	route,
@@ -616,7 +616,7 @@ const createDocument = (
 	blocks,
 });
 
-const createPageEntry = (document: WebsiteBuilderDocument) => ({
+const createPageEntry = (document: PhotonDocument) => ({
 	document: clone(document),
 	settings: {
 		page: {
@@ -639,7 +639,7 @@ const createPageEntry = (document: WebsiteBuilderDocument) => ({
 const createHeroBlock = (
 	scenario: CommerceProfileTemplateScenario,
 	locale: CommerceProfileTemplateLocale,
-): WebsiteBuilderBlock => ({
+): PhotonBlock => ({
 	id: "commerce-profile-hero",
 	module: "marketing-demo",
 	type: "hero-spotlight",
@@ -663,7 +663,7 @@ const createHeroBlock = (
 const createProofBlock = (
 	scenario: CommerceProfileTemplateScenario,
 	locale: CommerceProfileTemplateLocale,
-): WebsiteBuilderBlock => ({
+): PhotonBlock => ({
 	id: "commerce-profile-proof",
 	module: "marketing-demo",
 	type: "proof-strip",
@@ -680,7 +680,7 @@ const createProofBlock = (
 const createFeatureBlock = (
 	scenario: CommerceProfileTemplateScenario,
 	locale: CommerceProfileTemplateLocale,
-): WebsiteBuilderBlock => ({
+): PhotonBlock => ({
 	id: "commerce-profile-features",
 	module: "marketing-demo",
 	type: "feature-grid",
@@ -701,9 +701,9 @@ const createCatalogBlock = (
 	locale: CommerceProfileTemplateLocale,
 	id = "commerce-product-grid",
 	path?: CommerceCatalogBindingPath,
-): WebsiteBuilderBlock => ({
+): PhotonBlock => ({
 	id,
-	module: "commerce-website-builder",
+	module: "commerce-photon",
 	type: "commerce-product-grid",
 	props: {
 		eyebrow: t(locale, scenario.catalog.eyebrow),
@@ -740,7 +740,7 @@ const createCatalogBlock = (
 const createCtaBlock = (
 	scenario: CommerceProfileTemplateScenario,
 	locale: CommerceProfileTemplateLocale,
-): WebsiteBuilderBlock => ({
+): PhotonBlock => ({
 	id: "commerce-profile-cta",
 	module: "marketing-demo",
 	type: "command-center-cta",
@@ -846,7 +846,7 @@ const createDetailDocument = (
 		[
 			{
 				id: "commerce-product-detail",
-				module: "commerce-website-builder",
+				module: "commerce-photon",
 				type: "commerce-product-detail",
 				props: {
 					eyebrow:
@@ -873,7 +873,7 @@ const createDetailDocument = (
 			},
 			{
 				id: "commerce-add-to-cart",
-				module: "commerce-website-builder",
+				module: "commerce-photon",
 				type: "commerce-add-to-cart",
 				props: {
 					quantityLabel:
@@ -911,7 +911,7 @@ const createCartDocument = (
 		[
 			{
 				id: "commerce-cart-summary",
-				module: "commerce-website-builder",
+				module: "commerce-photon",
 				type: "commerce-cart-summary",
 				props: {
 					eyebrow:
@@ -967,7 +967,7 @@ const createCheckoutDocument = (
 		[
 			{
 				id: "commerce-checkout-form",
-				module: "commerce-website-builder",
+				module: "commerce-photon",
 				type: "commerce-checkout-form",
 				props: {
 					eyebrow: t(locale, { en: "Checkout", ru: "Оформление" }),
@@ -1016,7 +1016,7 @@ const createOrdersDocument = (
 		[
 			{
 				id: "commerce-order-list",
-				module: "commerce-website-builder",
+				module: "commerce-photon",
 				type: "commerce-order-list",
 				props: {
 					eyebrow: t(locale, { en: "Account", ru: "Личный кабинет" }),
@@ -1071,7 +1071,7 @@ const createSiteRegionDocument = (
 				[
 					{
 						id: "site-header-shell",
-						module: "website-builder-system",
+						module: "photon-system",
 						type: "site-header-shell",
 						props: {
 							variant: "commerce-inline",
@@ -1157,7 +1157,7 @@ const createSiteRegionDocument = (
 				[
 					{
 						id: "site-footer-shell",
-						module: "website-builder-system",
+						module: "photon-system",
 						type: "site-footer-shell",
 						props: {
 							variant: "classic-dark",
