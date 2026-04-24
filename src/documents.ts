@@ -1,7 +1,4 @@
-import type {
-	PhotonBlock,
-	PhotonDocument,
-} from "@init/photon";
+import type { PhotonBlock, PhotonDocument } from "@init/photon";
 
 export type CommerceProfileTemplateLocale = "en" | "ru";
 export type CommerceProfileTemplateId =
@@ -14,6 +11,8 @@ export type CommerceProfileTemplateSource =
 
 type CommerceProfileTemplateKind = "retail" | "services" | "hybrid";
 type CommerceCatalogBindingPath = "items" | "products" | "services";
+
+const checkoutCartHref = "/checkout?checkoutStep=cart";
 
 type CommerceProfileTemplateScenario = {
 	id: CommerceProfileTemplateId;
@@ -752,7 +751,7 @@ const createCtaBlock = (
 		primaryLabel: t(locale, scenario.cta.primaryLabel),
 		primaryHref: resolvePrimaryCatalogHref(scenario),
 		secondaryLabel: t(locale, scenario.cta.secondaryLabel),
-		secondaryHref: "/cart",
+		secondaryHref: checkoutCartHref,
 		panelEyebrow: t(locale, scenario.cta.panelEyebrow),
 		panelLabel: t(locale, scenario.cta.panelLabel),
 		panelItems: scenario.cta.panelItems.map((item) => t(locale, item)),
@@ -887,7 +886,7 @@ const createDetailDocument = (
 								? t(locale, { en: "Add offer", ru: "Добавить предложение" })
 								: t(locale, { en: "Add to cart", ru: "Добавить в корзину" }),
 					successLabel: t(locale, { en: "Added", ru: "Добавлено" }),
-					cartHref: "/cart",
+					cartHref: checkoutCartHref,
 				},
 				bindings: {
 					product: {
@@ -895,62 +894,6 @@ const createDetailDocument = (
 						path: "product",
 						mode: "read",
 					},
-				},
-			},
-		],
-	);
-
-const createCartDocument = (
-	scenario: CommerceProfileTemplateScenario,
-	locale: CommerceProfileTemplateLocale,
-) =>
-	createDocument(
-		`${scenario.id}-cart`,
-		t(locale, { en: "Cart", ru: "Корзина" }),
-		"/cart",
-		[
-			{
-				id: "commerce-cart-summary",
-				module: "commerce-photon",
-				type: "commerce-cart-summary",
-				props: {
-					eyebrow:
-						scenario.kind === "services"
-							? t(locale, { en: "Booking request", ru: "Заявка на запись" })
-							: t(locale, { en: "Cart", ru: "Корзина" }),
-					title:
-						scenario.kind === "services"
-							? t(locale, { en: "Selected services", ru: "Выбранные услуги" })
-							: scenario.kind === "hybrid"
-								? t(locale, {
-										en: "Selected offers",
-										ru: "Выбранные предложения",
-									})
-								: t(locale, { en: "Your cart", ru: "Ваша корзина" }),
-					emptyTitle: t(locale, {
-						en: "Your cart is empty",
-						ru: "Корзина пуста",
-					}),
-					emptyBody:
-						scenario.kind === "services"
-							? t(locale, {
-									en: "Choose a service package to start a booking request.",
-									ru: "Выберите пакет услуг, чтобы начать заявку на запись.",
-								})
-							: t(locale, {
-									en: "Add an active catalog item to continue checkout.",
-									ru: "Добавьте позицию каталога, чтобы продолжить оформление.",
-								}),
-					checkoutLabel:
-						scenario.kind === "services"
-							? t(locale, { en: "Request booking", ru: "Оставить заявку" })
-							: t(locale, { en: "Checkout", ru: "Оформить заказ" }),
-					catalogLabel: t(locale, {
-						en: "Back to catalog",
-						ru: "Назад в каталог",
-					}),
-					catalogHref: resolvePrimaryCatalogHref(scenario),
-					checkoutHref: "/checkout",
 				},
 			},
 		],
@@ -988,6 +931,78 @@ const createCheckoutDocument = (
 									en: "Review your cart and leave contact details for the order snapshot.",
 									ru: "Проверьте корзину и оставьте контакты для снимка заказа.",
 								}),
+					breadcrumbCartLabel: t(locale, { en: "Cart", ru: "Корзина" }),
+					breadcrumbCheckoutLabel:
+						scenario.kind === "services"
+							? t(locale, { en: "Request booking", ru: "Оставить заявку" })
+							: t(locale, { en: "Checkout", ru: "Оформить заказ" }),
+					cartEyebrow:
+						scenario.kind === "services"
+							? t(locale, { en: "Booking request", ru: "Заявка на запись" })
+							: t(locale, { en: "Cart", ru: "Корзина" }),
+					cartTitle:
+						scenario.kind === "services"
+							? t(locale, { en: "Selected services", ru: "Выбранные услуги" })
+							: scenario.kind === "hybrid"
+								? t(locale, {
+										en: "Selected offers",
+										ru: "Выбранные предложения",
+									})
+								: t(locale, { en: "Your cart", ru: "Ваша корзина" }),
+					cartCheckoutLabel:
+						scenario.kind === "services"
+							? t(locale, { en: "Request booking", ru: "Оставить заявку" })
+							: t(locale, { en: "Checkout", ru: "Оформить заказ" }),
+					cartEmptyTitle: t(locale, {
+						en: "Your cart is empty",
+						ru: "Корзина пуста",
+					}),
+					cartEmptyBody:
+						scenario.kind === "services"
+							? t(locale, {
+									en: "Choose a service package to start a booking request.",
+									ru: "Выберите пакет услуг, чтобы начать заявку на запись.",
+								})
+							: t(locale, {
+									en: "Add an active catalog item to continue checkout.",
+									ru: "Добавьте позицию каталога, чтобы продолжить оформление.",
+								}),
+					cartCatalogLabel: t(locale, {
+						en: "Back to catalog",
+						ru: "Назад в каталог",
+					}),
+					cartCatalogHref: resolvePrimaryCatalogHref(scenario),
+					cartStepTitle: t(locale, { en: "Cart", ru: "Корзина" }),
+					cartStepDescription: t(locale, {
+						en: "Review items",
+						ru: "Проверьте позиции",
+					}),
+					checkoutStepTitle: t(locale, {
+						en: "Checkout",
+						ru: "Оформление",
+					}),
+					checkoutStepDescription: t(locale, {
+						en: "Contacts and order",
+						ru: "Контакты и заказ",
+					}),
+					doneStepTitle:
+						scenario.kind === "services"
+							? t(locale, { en: "Request sent", ru: "Заявка отправлена" })
+							: t(locale, { en: "Order placed", ru: "Заказ создан" }),
+					doneStepDescription: t(locale, {
+						en: "Order placed",
+						ru: "Заказ создан",
+					}),
+					summaryTitle: t(locale, { en: "Cart", ru: "Корзина" }),
+					summaryTotalLabel: t(locale, { en: "Total", ru: "Итого" }),
+					summaryEmptyBody: t(locale, {
+						en: "Cart is empty.",
+						ru: "Корзина пуста.",
+					}),
+					summaryReturnLabel: t(locale, {
+						en: "Return to cart",
+						ru: "Вернуться в корзину",
+					}),
 					nameLabel: t(locale, { en: "Name", ru: "Имя" }),
 					emailLabel: "Email",
 					phoneLabel: t(locale, { en: "Phone", ru: "Телефон" }),
@@ -995,11 +1010,16 @@ const createCheckoutDocument = (
 						scenario.kind === "services"
 							? t(locale, { en: "Send request", ru: "Отправить заявку" })
 							: t(locale, { en: "Place order", ru: "Разместить заказ" }),
+					savingLabel: t(locale, { en: "Placing...", ru: "Размещаем..." }),
+					errorLabel: t(locale, {
+						en: "Unable to place order",
+						ru: "Не удалось разместить заказ",
+					}),
 					successTitle:
 						scenario.kind === "services"
 							? t(locale, { en: "Request sent", ru: "Заявка отправлена" })
 							: t(locale, { en: "Order placed", ru: "Заказ создан" }),
-					cartHref: "/cart",
+					cartHref: checkoutCartHref,
 				},
 			},
 		],
@@ -1091,10 +1111,6 @@ const createSiteRegionDocument = (
 									label: t(locale, { en: "Orders", ru: "Заказы" }),
 									href: "/account/orders",
 								},
-								{
-									label: t(locale, { en: "Cart", ru: "Корзина" }),
-									href: "/cart",
-								},
 							],
 							catalogLabel:
 								scenario.kind === "services"
@@ -1136,10 +1152,6 @@ const createSiteRegionDocument = (
 								{
 									label: t(locale, { en: "Services", ru: "Услуги" }),
 									href: "/services",
-								},
-								{
-									label: t(locale, { en: "Cart", ru: "Корзина" }),
-									href: "/cart",
 								},
 								{
 									label: t(locale, { en: "Checkout", ru: "Оформление" }),
@@ -1206,10 +1218,6 @@ const createSiteRegionDocument = (
 											label: t(locale, { en: "Services", ru: "Услуги" }),
 											href: "/services",
 										},
-										{
-											label: t(locale, { en: "Cart", ru: "Корзина" }),
-											href: "/cart",
-										},
 									],
 								},
 								{
@@ -1269,7 +1277,6 @@ export const createCommerceProfileTemplateTree = (
 	const products = createTypedCatalogDocument(scenario, locale, "products");
 	const services = createTypedCatalogDocument(scenario, locale, "services");
 	const detail = createDetailDocument(scenario, locale);
-	const cart = createCartDocument(scenario, locale);
 	const checkout = createCheckoutDocument(scenario, locale);
 	const orders = createOrdersDocument(scenario, locale);
 
@@ -1280,7 +1287,6 @@ export const createCommerceProfileTemplateTree = (
 			products: createPageEntry(products),
 			services: createPageEntry(services),
 			product: createPageEntry(detail),
-			cart: createPageEntry(cart),
 			checkout: createPageEntry(checkout),
 			accountOrders: createPageEntry(orders),
 		},
