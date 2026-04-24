@@ -8,7 +8,8 @@
 	"types": "./src/index.ts",
 	"exports": {
 		".": "./src/index.ts",
-		"./documents": "./src/documents.ts"
+		"./documents": "./src/documents.ts",
+		"./profile-blocks": "./src/profile-blocks/index.ts"
 	},
 	"peerDependencies": {
 		"@init/commerce-photon": "^0.1.0",

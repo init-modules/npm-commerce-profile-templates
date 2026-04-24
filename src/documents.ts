@@ -1,77 +1,15 @@
-import type { PhotonBlock, PhotonDocument } from "@init/photon";
+import type { PhotonDocument } from "@init/photon";
+import {
+	getCommerceProfileBlockFamily,
+	type CommerceCatalogBindingPath,
+	type CommerceProfileTemplateId,
+	type CommerceProfileTemplateLocale,
+	type CommerceProfileTemplateScenario,
+} from "./profile-blocks";
 
-export type CommerceProfileTemplateLocale = "en" | "ru";
-export type CommerceProfileTemplateId =
-	| "commerce-ready-retail-store"
-	| "commerce-ready-service-studio"
-	| "commerce-ready-hybrid-market";
 export type CommerceProfileTemplateSource =
 	| { type: "preset"; sourceId?: string }
 	| { type: "template"; sourceId?: string };
-
-type CommerceProfileTemplateKind = "retail" | "services" | "hybrid";
-type CommerceCatalogBindingPath = "items" | "products" | "services";
-
-const checkoutCartHref = "/checkout?checkoutStep=cart";
-
-type CommerceProfileTemplateScenario = {
-	id: CommerceProfileTemplateId;
-	kind: CommerceProfileTemplateKind;
-	label: string;
-	description: string;
-	sourcePresetId: CommerceProfileTemplateId;
-	previewRoute: string;
-	brand: {
-		en: string;
-		ru: string;
-	};
-	contact: string;
-	email: string;
-	hero: {
-		eyebrow: { en: string; ru: string };
-		title: { en: string; ru: string };
-		body: { en: string; ru: string };
-		primaryLabel: { en: string; ru: string };
-		secondaryLabel: { en: string; ru: string };
-		spotlightLabel: { en: string; ru: string };
-		spotlightValue: { en: string; ru: string };
-		imageUrl: string;
-		imageAlt: { en: string; ru: string };
-	};
-	catalog: {
-		eyebrow: { en: string; ru: string };
-		title: { en: string; ru: string };
-		body: { en: string; ru: string };
-		emptyTitle: { en: string; ru: string };
-		emptyBody: { en: string; ru: string };
-		cardCtaLabel: { en: string; ru: string };
-		columns: number;
-	};
-	proofTitle: { en: string; ru: string };
-	proofItems: Array<{
-		value: string;
-		label: { en: string; ru: string };
-	}>;
-	features: {
-		eyebrow: { en: string; ru: string };
-		title: { en: string; ru: string };
-		body: { en: string; ru: string };
-		items: Array<{
-			title: { en: string; ru: string };
-			body: { en: string; ru: string };
-		}>;
-	};
-	cta: {
-		badge: { en: string; ru: string };
-		title: { en: string; ru: string };
-		body: { en: string; ru: string };
-		primaryLabel: { en: string; ru: string };
-		secondaryLabel: { en: string; ru: string };
-		panelEyebrow: { en: string; ru: string };
-		panelLabel: { en: string; ru: string };
-		panelItems: Array<{ en: string; ru: string }>;
-	};
-};
 
 const updatedAt = "2026-04-19T00:00:00.000Z";
 
@@ -82,9 +20,10 @@ const t = (
 
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
-const scenarios: CommerceProfileTemplateScenario[] = [
+const auroraScenarios: CommerceProfileTemplateScenario[] = [
 	{
 		id: "commerce-ready-retail-store",
+		familyId: "aurora-current",
 		kind: "retail",
 		label: "Commerce Retail Store",
 		description:
@@ -257,6 +196,7 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 	},
 	{
 		id: "commerce-ready-service-studio",
+		familyId: "aurora-current",
 		kind: "services",
 		label: "Commerce Service Studio",
 		description:
@@ -417,6 +357,7 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 	},
 	{
 		id: "commerce-ready-hybrid-market",
+		familyId: "aurora-current",
 		kind: "hybrid",
 		label: "Commerce Hybrid Market",
 		description:
@@ -577,6 +518,54 @@ const scenarios: CommerceProfileTemplateScenario[] = [
 	},
 ];
 
+const initScenarioOverrides = {
+	"commerce-ready-retail-store": {
+		id: "commerce-init-retail-store",
+		label: "Init Commerce Retail Store",
+		description:
+			"Init Landing storefront profile for a product-led shop with a different landing composition and the same commerce catalog, checkout and orders logic.",
+		previewRoute: "/template/init-commerce-retail-store",
+	},
+	"commerce-ready-service-studio": {
+		id: "commerce-init-service-company",
+		label: "Init Commerce Service Company",
+		description:
+			"Init Landing service-company profile with booking-style commerce catalog, checkout request flow and order history.",
+		previewRoute: "/template/init-commerce-service-company",
+	},
+	"commerce-ready-hybrid-market": {
+		id: "commerce-init-hybrid-market",
+		label: "Init Commerce Hybrid Market",
+		description:
+			"Init Landing hybrid commerce profile for teams selling physical products and service packages through one runtime flow.",
+		previewRoute: "/template/init-commerce-hybrid-market",
+	},
+} satisfies Record<
+	string,
+	Pick<
+		CommerceProfileTemplateScenario,
+		"id" | "label" | "description" | "previewRoute"
+	>
+>;
+
+const initScenarios: CommerceProfileTemplateScenario[] = auroraScenarios.map(
+	(scenario) => {
+		const override = initScenarioOverrides[scenario.id];
+
+		return {
+			...scenario,
+			...override,
+			sourcePresetId: override.id,
+			familyId: "init-landing",
+		};
+	},
+);
+
+const scenarios: CommerceProfileTemplateScenario[] = [
+	...auroraScenarios,
+	...initScenarios,
+];
+
 const scenarioById = new Map(
 	scenarios.map((scenario) => [scenario.id, scenario]),
 );
@@ -643,7 +632,7 @@ const createHeroBlock = (
 	module: "marketing-demo",
 	type: "hero-spotlight",
 	props: {
-		variant: scenario.kind === "services" ? "air" : "default",
+		variant: getCommerceProfileMarketingVariant(scenario.kind),
 		eyebrow: t(locale, scenario.hero.eyebrow),
 		title: t(locale, scenario.hero.title),
 		body: t(locale, scenario.hero.body),
@@ -667,7 +656,7 @@ const createProofBlock = (
 	module: "marketing-demo",
 	type: "proof-strip",
 	props: {
-		variant: scenario.kind === "services" ? "air" : "default",
+		variant: getCommerceProfileMarketingVariant(scenario.kind),
 		title: t(locale, scenario.proofTitle),
 		items: scenario.proofItems.map((item) => ({
 			value: item.value,
@@ -684,7 +673,7 @@ const createFeatureBlock = (
 	module: "marketing-demo",
 	type: "feature-grid",
 	props: {
-		variant: scenario.kind === "services" ? "air" : "default",
+		variant: getCommerceProfileMarketingVariant(scenario.kind),
 		eyebrow: t(locale, scenario.features.eyebrow),
 		title: t(locale, scenario.features.title),
 		body: t(locale, scenario.features.body),
@@ -744,7 +733,7 @@ const createCtaBlock = (
 	module: "marketing-demo",
 	type: "command-center-cta",
 	props: {
-		variant: scenario.kind === "services" ? "air" : "default",
+		variant: getCommerceProfileMarketingVariant(scenario.kind),
 		badge: t(locale, scenario.cta.badge),
 		title: t(locale, scenario.cta.title),
 		body: t(locale, scenario.cta.body),
@@ -1256,15 +1245,7 @@ const createSiteRegionDocument = (
 			);
 
 const createSiteSettings = (scenario: CommerceProfileTemplateScenario) => ({
-	design: {
-		presetId: "aurora-current",
-		colorSchemeId:
-			scenario.kind === "services"
-				? "soft-cloud"
-				: scenario.kind === "hybrid"
-					? "mint-ledger"
-					: "midnight-mint",
-	},
+	design: getCommerceProfileSiteDesign(scenario.kind),
 });
 
 export const createCommerceProfileTemplateTree = (
