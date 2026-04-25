@@ -550,7 +550,10 @@ const initScenarioOverrides = {
 
 const initScenarios: CommerceProfileTemplateScenario[] = auroraScenarios.map(
 	(scenario) => {
-		const override = initScenarioOverrides[scenario.id];
+		const override =
+			initScenarioOverrides[
+				scenario.id as keyof typeof initScenarioOverrides
+			];
 
 		return {
 			...scenario,
@@ -578,10 +581,6 @@ const resolveScenario = (
 
 	return scenario ?? scenarios[0];
 };
-
-const resolvePrimaryCatalogHref = (
-	scenario: CommerceProfileTemplateScenario,
-) => (scenario.kind === "services" ? "/services" : "/products");
 
 export const isCommerceProfileTemplateSource = (source: {
 	type: string;
@@ -624,129 +623,6 @@ const createPageEntry = (document: PhotonDocument) => ({
 	},
 });
 
-const createHeroBlock = (
-	scenario: CommerceProfileTemplateScenario,
-	locale: CommerceProfileTemplateLocale,
-): PhotonBlock => ({
-	id: "commerce-profile-hero",
-	module: "marketing-demo",
-	type: "hero-spotlight",
-	props: {
-		variant: getCommerceProfileMarketingVariant(scenario.kind),
-		eyebrow: t(locale, scenario.hero.eyebrow),
-		title: t(locale, scenario.hero.title),
-		body: t(locale, scenario.hero.body),
-		primaryLabel: t(locale, scenario.hero.primaryLabel),
-		primaryMetaLabel: locale === "ru" ? "Каталог" : "Catalog",
-		primaryHref: resolvePrimaryCatalogHref(scenario),
-		secondaryLabel: t(locale, scenario.hero.secondaryLabel),
-		secondaryHref: "/account/orders",
-		spotlightLabel: t(locale, scenario.hero.spotlightLabel),
-		spotlightValue: t(locale, scenario.hero.spotlightValue),
-		imageUrl: scenario.hero.imageUrl,
-		imageAlt: t(locale, scenario.hero.imageAlt),
-	},
-});
-
-const createProofBlock = (
-	scenario: CommerceProfileTemplateScenario,
-	locale: CommerceProfileTemplateLocale,
-): PhotonBlock => ({
-	id: "commerce-profile-proof",
-	module: "marketing-demo",
-	type: "proof-strip",
-	props: {
-		variant: getCommerceProfileMarketingVariant(scenario.kind),
-		title: t(locale, scenario.proofTitle),
-		items: scenario.proofItems.map((item) => ({
-			value: item.value,
-			label: t(locale, item.label),
-		})),
-	},
-});
-
-const createFeatureBlock = (
-	scenario: CommerceProfileTemplateScenario,
-	locale: CommerceProfileTemplateLocale,
-): PhotonBlock => ({
-	id: "commerce-profile-features",
-	module: "marketing-demo",
-	type: "feature-grid",
-	props: {
-		variant: getCommerceProfileMarketingVariant(scenario.kind),
-		eyebrow: t(locale, scenario.features.eyebrow),
-		title: t(locale, scenario.features.title),
-		body: t(locale, scenario.features.body),
-		features: scenario.features.items.map((item) => ({
-			title: t(locale, item.title),
-			body: t(locale, item.body),
-		})),
-	},
-});
-
-const createCatalogBlock = (
-	scenario: CommerceProfileTemplateScenario,
-	locale: CommerceProfileTemplateLocale,
-	id = "commerce-product-grid",
-	path?: CommerceCatalogBindingPath,
-): PhotonBlock => ({
-	id,
-	module: "commerce-photon",
-	type: "commerce-product-grid",
-	props: {
-		eyebrow: t(locale, scenario.catalog.eyebrow),
-		title: t(locale, scenario.catalog.title),
-		body: t(locale, scenario.catalog.body),
-		emptyTitle: t(locale, scenario.catalog.emptyTitle),
-		emptyBody: t(locale, scenario.catalog.emptyBody),
-		cardCtaLabel: t(locale, scenario.catalog.cardCtaLabel),
-		addToCartLabel:
-			path === "services" || scenario.kind === "services"
-				? t(locale, { en: "Book", ru: "Записаться" })
-				: t(locale, { en: "Add to cart", ru: "В корзину" }),
-		columns:
-			path === "services" || scenario.kind === "services"
-				? Math.min(scenario.catalog.columns, 3)
-				: Math.max(scenario.catalog.columns, 5),
-		showDescription: true,
-	},
-	bindings: {
-		items: {
-			source: "commerceCatalog",
-			path:
-				path ??
-				(scenario.kind === "retail"
-					? "products"
-					: scenario.kind === "services"
-						? "services"
-						: "items"),
-			mode: "write",
-		},
-	},
-});
-
-const createCtaBlock = (
-	scenario: CommerceProfileTemplateScenario,
-	locale: CommerceProfileTemplateLocale,
-): PhotonBlock => ({
-	id: "commerce-profile-cta",
-	module: "marketing-demo",
-	type: "command-center-cta",
-	props: {
-		variant: getCommerceProfileMarketingVariant(scenario.kind),
-		badge: t(locale, scenario.cta.badge),
-		title: t(locale, scenario.cta.title),
-		body: t(locale, scenario.cta.body),
-		primaryLabel: t(locale, scenario.cta.primaryLabel),
-		primaryHref: resolvePrimaryCatalogHref(scenario),
-		secondaryLabel: t(locale, scenario.cta.secondaryLabel),
-		secondaryHref: checkoutCartHref,
-		panelEyebrow: t(locale, scenario.cta.panelEyebrow),
-		panelLabel: t(locale, scenario.cta.panelLabel),
-		panelItems: scenario.cta.panelItems.map((item) => t(locale, item)),
-	},
-});
-
 const createHomeDocument = (
 	scenario: CommerceProfileTemplateScenario,
 	locale: CommerceProfileTemplateLocale,
@@ -763,13 +639,10 @@ const createHomeDocument = (
 						: "Главная гибридной витрины",
 		}),
 		"/",
-		[
-			createHeroBlock(scenario, locale),
-			createProofBlock(scenario, locale),
-			createFeatureBlock(scenario, locale),
-			createCatalogBlock(scenario, locale, "commerce-home-catalog"),
-			createCtaBlock(scenario, locale),
-		],
+		getCommerceProfileBlockFamily(scenario.familyId).createHomeBlocks(
+			scenario,
+			locale,
+		),
 	);
 
 const createCatalogDocument = (
@@ -793,7 +666,10 @@ const createCatalogDocument = (
 						: "Каталог товаров",
 		}),
 		"/catalog",
-		[createCatalogBlock(scenario, locale)],
+		getCommerceProfileBlockFamily(scenario.familyId).createCatalogBlocks(
+			scenario,
+			locale,
+		),
 	);
 
 const createTypedCatalogDocument = (
@@ -807,7 +683,11 @@ const createTypedCatalogDocument = (
 			? t(locale, { en: "Services", ru: "Услуги" })
 			: t(locale, { en: "Products", ru: "Товары" }),
 		path === "services" ? "/services" : "/products",
-		[createCatalogBlock(scenario, locale, `commerce-${path}-grid`, path)],
+		getCommerceProfileBlockFamily(scenario.familyId).createCatalogBlocks(
+			scenario,
+			locale,
+			path,
+		),
 	);
 
 const createDetailDocument = (
@@ -831,61 +711,10 @@ const createDetailDocument = (
 						: "Страница товара",
 		}),
 		"/catalog/{slug}",
-		[
-			{
-				id: "commerce-product-detail",
-				module: "commerce-photon",
-				type: "commerce-product-detail",
-				props: {
-					eyebrow:
-						scenario.kind === "services"
-							? t(locale, { en: "Service", ru: "Услуга" })
-							: scenario.kind === "hybrid"
-								? t(locale, { en: "Offer", ru: "Предложение" })
-								: t(locale, { en: "Product", ru: "Товар" }),
-					backLabel: t(locale, {
-						en: "Back to catalog",
-						ru: "Назад в каталог",
-					}),
-					showSku: scenario.kind !== "services",
-					showDescription: true,
-					showImage: true,
-				},
-				bindings: {
-					product: {
-						source: "commerceProduct",
-						path: "product",
-						mode: "write",
-					},
-				},
-			},
-			{
-				id: "commerce-add-to-cart",
-				module: "commerce-photon",
-				type: "commerce-add-to-cart",
-				props: {
-					quantityLabel:
-						scenario.kind === "services"
-							? t(locale, { en: "Sessions", ru: "Сессии" })
-							: t(locale, { en: "Quantity", ru: "Количество" }),
-					buttonLabel:
-						scenario.kind === "services"
-							? t(locale, { en: "Book service", ru: "Записаться" })
-							: scenario.kind === "hybrid"
-								? t(locale, { en: "Add offer", ru: "Добавить предложение" })
-								: t(locale, { en: "Add to cart", ru: "Добавить в корзину" }),
-					successLabel: t(locale, { en: "Added", ru: "Добавлено" }),
-					cartHref: checkoutCartHref,
-				},
-				bindings: {
-					product: {
-						source: "commerceProduct",
-						path: "product",
-						mode: "read",
-					},
-				},
-			},
-		],
+		getCommerceProfileBlockFamily(scenario.familyId).createDetailBlocks(
+			scenario,
+			locale,
+		),
 	);
 
 const createCheckoutDocument = (
@@ -896,122 +725,10 @@ const createCheckoutDocument = (
 		`${scenario.id}-checkout`,
 		t(locale, { en: "Checkout", ru: "Оформление" }),
 		"/checkout",
-		[
-			{
-				id: "commerce-checkout-form",
-				module: "commerce-photon",
-				type: "commerce-checkout-form",
-				props: {
-					eyebrow: t(locale, { en: "Checkout", ru: "Оформление" }),
-					title:
-						scenario.kind === "services"
-							? t(locale, {
-									en: "Confirm your service request",
-									ru: "Подтвердите заявку на услугу",
-								})
-							: t(locale, { en: "Place your order", ru: "Оформить заказ" }),
-					body:
-						scenario.kind === "services"
-							? t(locale, {
-									en: "Leave contact details and the team will confirm the appointment time.",
-									ru: "Оставьте контакты, и команда подтвердит время записи.",
-								})
-							: t(locale, {
-									en: "Review your cart and leave contact details for the order snapshot.",
-									ru: "Проверьте корзину и оставьте контакты для снимка заказа.",
-								}),
-					breadcrumbCartLabel: t(locale, { en: "Cart", ru: "Корзина" }),
-					breadcrumbCheckoutLabel:
-						scenario.kind === "services"
-							? t(locale, { en: "Request booking", ru: "Оставить заявку" })
-							: t(locale, { en: "Checkout", ru: "Оформить заказ" }),
-					cartEyebrow:
-						scenario.kind === "services"
-							? t(locale, { en: "Booking request", ru: "Заявка на запись" })
-							: t(locale, { en: "Cart", ru: "Корзина" }),
-					cartTitle:
-						scenario.kind === "services"
-							? t(locale, { en: "Selected services", ru: "Выбранные услуги" })
-							: scenario.kind === "hybrid"
-								? t(locale, {
-										en: "Selected offers",
-										ru: "Выбранные предложения",
-									})
-								: t(locale, { en: "Your cart", ru: "Ваша корзина" }),
-					cartCheckoutLabel:
-						scenario.kind === "services"
-							? t(locale, { en: "Request booking", ru: "Оставить заявку" })
-							: t(locale, { en: "Checkout", ru: "Оформить заказ" }),
-					cartEmptyTitle: t(locale, {
-						en: "Your cart is empty",
-						ru: "Корзина пуста",
-					}),
-					cartEmptyBody:
-						scenario.kind === "services"
-							? t(locale, {
-									en: "Choose a service package to start a booking request.",
-									ru: "Выберите пакет услуг, чтобы начать заявку на запись.",
-								})
-							: t(locale, {
-									en: "Add an active catalog item to continue checkout.",
-									ru: "Добавьте позицию каталога, чтобы продолжить оформление.",
-								}),
-					cartCatalogLabel: t(locale, {
-						en: "Back to catalog",
-						ru: "Назад в каталог",
-					}),
-					cartCatalogHref: resolvePrimaryCatalogHref(scenario),
-					cartStepTitle: t(locale, { en: "Cart", ru: "Корзина" }),
-					cartStepDescription: t(locale, {
-						en: "Review items",
-						ru: "Проверьте позиции",
-					}),
-					checkoutStepTitle: t(locale, {
-						en: "Checkout",
-						ru: "Оформление",
-					}),
-					checkoutStepDescription: t(locale, {
-						en: "Contacts and order",
-						ru: "Контакты и заказ",
-					}),
-					doneStepTitle:
-						scenario.kind === "services"
-							? t(locale, { en: "Request sent", ru: "Заявка отправлена" })
-							: t(locale, { en: "Order placed", ru: "Заказ создан" }),
-					doneStepDescription: t(locale, {
-						en: "Order placed",
-						ru: "Заказ создан",
-					}),
-					summaryTitle: t(locale, { en: "Cart", ru: "Корзина" }),
-					summaryTotalLabel: t(locale, { en: "Total", ru: "Итого" }),
-					summaryEmptyBody: t(locale, {
-						en: "Cart is empty.",
-						ru: "Корзина пуста.",
-					}),
-					summaryReturnLabel: t(locale, {
-						en: "Return to cart",
-						ru: "Вернуться в корзину",
-					}),
-					nameLabel: t(locale, { en: "Name", ru: "Имя" }),
-					emailLabel: "Email",
-					phoneLabel: t(locale, { en: "Phone", ru: "Телефон" }),
-					submitLabel:
-						scenario.kind === "services"
-							? t(locale, { en: "Send request", ru: "Отправить заявку" })
-							: t(locale, { en: "Place order", ru: "Разместить заказ" }),
-					savingLabel: t(locale, { en: "Placing...", ru: "Размещаем..." }),
-					errorLabel: t(locale, {
-						en: "Unable to place order",
-						ru: "Не удалось разместить заказ",
-					}),
-					successTitle:
-						scenario.kind === "services"
-							? t(locale, { en: "Request sent", ru: "Заявка отправлена" })
-							: t(locale, { en: "Order placed", ru: "Заказ создан" }),
-					cartHref: checkoutCartHref,
-				},
-			},
-		],
+		getCommerceProfileBlockFamily(scenario.familyId).createCheckoutBlocks(
+			scenario,
+			locale,
+		),
 	);
 
 const createOrdersDocument = (
@@ -1022,49 +739,10 @@ const createOrdersDocument = (
 		`${scenario.id}-orders`,
 		t(locale, { en: "Account Orders", ru: "Заказы аккаунта" }),
 		"/account/orders",
-		[
-			{
-				id: "commerce-order-list",
-				module: "commerce-photon",
-				type: "commerce-order-list",
-				props: {
-					eyebrow: t(locale, { en: "Account", ru: "Личный кабинет" }),
-					title:
-						scenario.kind === "services"
-							? t(locale, {
-									en: "Your service requests",
-									ru: "Ваши заявки на услуги",
-								})
-							: t(locale, { en: "Your orders", ru: "Ваши заказы" }),
-					emptyTitle:
-						scenario.kind === "services"
-							? t(locale, { en: "No requests yet", ru: "Заявок пока нет" })
-							: t(locale, { en: "No orders yet", ru: "Заказов пока нет" }),
-					emptyBody:
-						scenario.kind === "services"
-							? t(locale, {
-									en: "Send your first service request to see history here.",
-									ru: "Отправьте первую заявку на услугу, чтобы увидеть историю.",
-								})
-							: t(locale, {
-									en: "Checkout your first cart to see order history here.",
-									ru: "Оформите первую корзину, чтобы увидеть историю заказов.",
-								}),
-					orderLabel:
-						scenario.kind === "services"
-							? t(locale, { en: "Request", ru: "Заявка" })
-							: t(locale, { en: "Order", ru: "Заказ" }),
-					totalLabel: t(locale, { en: "Total", ru: "Итого" }),
-					itemCountLabel: t(locale, { en: "items", ru: "позиций" }),
-					catalogLabel: t(locale, {
-						en: "Open catalog",
-						ru: "Открыть каталог",
-					}),
-					catalogHref: resolvePrimaryCatalogHref(scenario),
-					limit: 20,
-				},
-			},
-		],
+		getCommerceProfileBlockFamily(scenario.familyId).createOrdersBlocks(
+			scenario,
+			locale,
+		),
 	);
 
 const createSiteRegionDocument = (
@@ -1072,181 +750,21 @@ const createSiteRegionDocument = (
 	locale: CommerceProfileTemplateLocale,
 	key: "header" | "footer",
 ) =>
-	key === "header"
-		? createDocument(
-				`${scenario.id}-site-header`,
-				t(locale, { en: "Commerce Header", ru: "Commerce хедер" }),
-				"/_site/header",
-				[
-					{
-						id: "site-header-shell",
-						module: "photon-system",
-						type: "site-header-shell",
-						props: {
-							variant: "commerce-inline",
-							brandLabel: t(locale, scenario.brand),
-							brandHref: "/",
-							logoImage: null,
-							utilityLinks: [
-								{
-									label: t(locale, { en: "Products", ru: "Товары" }),
-									href: "/products",
-								},
-								{
-									label: t(locale, { en: "Services", ru: "Услуги" }),
-									href: "/services",
-								},
-								{
-									label: t(locale, { en: "Orders", ru: "Заказы" }),
-									href: "/account/orders",
-								},
-							],
-							catalogLabel:
-								scenario.kind === "services"
-									? t(locale, { en: "Services", ru: "Услуги" })
-									: t(locale, { en: "Catalog", ru: "Каталог" }),
-							searchPlaceholder:
-								scenario.kind === "services"
-									? t(locale, { en: "Search services", ru: "Поиск услуг" })
-									: scenario.kind === "hybrid"
-										? t(locale, {
-												en: "Search offers",
-												ru: "Поиск предложений",
-											})
-										: t(locale, { en: "Search products", ru: "Поиск товаров" }),
-							contactValue: scenario.contact,
-							contactCaption:
-								scenario.kind === "services"
-									? t(locale, { en: "Booking support", ru: "Поддержка записи" })
-									: t(locale, {
-											en: "Daily support",
-											ru: "Поддержка каждый день",
-										}),
-							primaryCtaLabel:
-								scenario.kind === "services"
-									? t(locale, { en: "Book now", ru: "Записаться" })
-									: t(locale, { en: "Shop now", ru: "Купить" }),
-							primaryCtaHref: resolvePrimaryCatalogHref(scenario),
-							secondaryCtaLabel: t(locale, { en: "Orders", ru: "Заказы" }),
-							secondaryCtaHref: "/account/orders",
-							showLoginAction: true,
-							loginLabel: t(locale, { en: "Sign in", ru: "Войти" }),
-							sticky: true,
-							compactOnScroll: true,
-							categoryLinks: [
-								{
-									label: t(locale, { en: "Products", ru: "Товары" }),
-									href: "/products",
-								},
-								{
-									label: t(locale, { en: "Services", ru: "Услуги" }),
-									href: "/services",
-								},
-								{
-									label: t(locale, { en: "Checkout", ru: "Оформление" }),
-									href: "/checkout",
-								},
-							],
-						},
-					},
-				],
-			)
-		: createDocument(
-				`${scenario.id}-site-footer`,
-				t(locale, { en: "Commerce Footer", ru: "Commerce футер" }),
-				"/_site/footer",
-				[
-					{
-						id: "site-footer-shell",
-						module: "photon-system",
-						type: "site-footer-shell",
-						props: {
-							variant: "classic-dark",
-							brandTitle: t(locale, scenario.brand),
-							brandBody: t(locale, {
-								en:
-									scenario.kind === "services"
-										? "Service catalog, booking-cart requests and account request history for repeat clients."
-										: scenario.kind === "hybrid"
-											? "Unified commerce profile for products, service packages, checkout and account order history."
-											: "Product catalog, shopping cart, checkout and account order history for a polished online shop.",
-								ru:
-									scenario.kind === "services"
-										? "Каталог услуг, заявки через корзину записи и история обращений для постоянных клиентов."
-										: scenario.kind === "hybrid"
-											? "Единый commerce-профиль для товаров, сервисных пакетов, checkout и истории заказов."
-											: "Каталог товаров, корзина, checkout и история заказов для аккуратного интернет-магазина.",
-							}),
-							logoImage: null,
-							subscriptionTitle: t(locale, {
-								en: "Get updates",
-								ru: "Получать обновления",
-							}),
-							subscriptionBody: t(locale, {
-								en: "New arrivals, seasonal service slots and operational updates.",
-								ru: "Новинки, сезонные сервисные слоты и операционные обновления.",
-							}),
-							subscriptionPlaceholder: "Email",
-							subscriptionButtonLabel: t(locale, {
-								en: "Subscribe",
-								ru: "Подписаться",
-							}),
-							navigationColumns: [
-								{
-									title: t(locale, { en: "Storefront", ru: "Витрина" }),
-									links: [
-										{
-											label: t(locale, { en: "Home", ru: "Главная" }),
-											href: "/",
-										},
-										{
-											label: t(locale, { en: "Products", ru: "Товары" }),
-											href: "/products",
-										},
-										{
-											label: t(locale, { en: "Services", ru: "Услуги" }),
-											href: "/services",
-										},
-									],
-								},
-								{
-									title: t(locale, { en: "Account", ru: "Аккаунт" }),
-									links: [
-										{
-											label: t(locale, { en: "Orders", ru: "Заказы" }),
-											href: "/account/orders",
-										},
-										{
-											label: t(locale, { en: "Checkout", ru: "Оформление" }),
-											href: "/checkout",
-										},
-									],
-								},
-							],
-							contactItems: [
-								scenario.contact,
-								scenario.email,
-								locale === "ru" ? "Алматы, Казахстан" : "Almaty, Kazakhstan",
-							],
-							legalLabel: t(locale, {
-								en: "Privacy policy",
-								ru: "Политика конфиденциальности",
-							}),
-							legalHref: "/privacy",
-							copyrightLabel: `${t(locale, scenario.brand)} 2026`,
-							developerLabel: t(locale, {
-								en: "Built by init",
-								ru: "Сделано init",
-							}),
-							developerHref: "https://init.kz",
-						},
-					},
-				],
-			);
+	createDocument(
+		`${scenario.id}-site-${key}`,
+		key === "header"
+			? t(locale, { en: "Commerce Header", ru: "Commerce хедер" })
+			: t(locale, { en: "Commerce Footer", ru: "Commerce футер" }),
+		`/_site/${key}`,
+		getCommerceProfileBlockFamily(scenario.familyId).createSiteRegionBlocks(
+			scenario,
+			locale,
+			key,
+		),
+	);
 
-const createSiteSettings = (scenario: CommerceProfileTemplateScenario) => ({
-	design: getCommerceProfileSiteDesign(scenario.kind),
-});
+const createSiteSettings = (scenario: CommerceProfileTemplateScenario) =>
+	getCommerceProfileBlockFamily(scenario.familyId).createSiteSettings(scenario);
 
 export const createCommerceProfileTemplateTree = (
 	locale: CommerceProfileTemplateLocale,
